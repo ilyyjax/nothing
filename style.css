@@ -1,0 +1,84 @@
+:root {
+  --bg: #000;
+  --text: #eaeaea;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color-scheme: dark;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+body.ready {
+  opacity: 1;
+}
+
+/* Starfield layer */
+#sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.4;
+  animation-name: flicker, drift;
+  animation-iteration-count: infinite, infinite;
+  animation-timing-function: ease-in-out, ease-in-out;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.3; }
+  40% { opacity: 0.8; }
+  60% { opacity: 1; }
+  80% { opacity: 0.5; }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+
+/* Title */
+.title {
+  z-index: 1;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: clamp(2.25rem, 9vw, 9rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  text-shadow: 0 0 12px rgba(255,255,255,0.2);
+  opacity: 0;
+  transition: opacity 2s ease 1.5s;
+  animation: float 6s ease-in-out infinite;
+}
+
+body.ready .title { opacity: 1; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-1deg); }
+  50% { transform: translateY(0) rotate(1deg); }
+  75% { transform: translateY(6px) rotate(-0.5deg); }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; opacity: 1; }
+  .star { animation: none; opacity: 0.6; }
+  .title { transition: none; opacity: 1; animation: none; }
+}
